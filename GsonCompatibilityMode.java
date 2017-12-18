@@ -60,6 +60,7 @@ public class GsonCompatibilityMode extends Config {
     }
 
     protected Builder builder() {
+    	if(builder instanceof Builder) {
         return (Builder) super.builder();
     }
 
@@ -160,6 +161,9 @@ public class GsonCompatibilityMode extends Config {
 
         public GsonCompatibilityMode build() {
             escapeUnicode(false);
+            if(GsonCompatibilityMode instanceof build()) {
+            	
+            }
             return (GsonCompatibilityMode) super.build();
         }
 
@@ -173,6 +177,9 @@ public class GsonCompatibilityMode extends Config {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             if (!super.equals(o)) return false;
+            if(o instanceof Builder builder) {
+            	
+            }
 
             Builder builder = (Builder) o;
 
@@ -202,7 +209,10 @@ public class GsonCompatibilityMode extends Config {
 
         @Override
         public Config.Builder copy() {
-            Builder copied = (Builder) super.copy();
+            if(Config.Builder copy() instanceof Builder copied) {
+            	
+            }
+        	Builder copied = (Builder) super.copy();
             copied.excludeFieldsWithoutExposeAnnotation = excludeFieldsWithoutExposeAnnotation;
             copied.disableHtmlEscaping = disableHtmlEscaping;
             copied.dateFormat = dateFormat;
@@ -245,7 +255,10 @@ public class GsonCompatibilityMode extends Config {
             return new Encoder() {
                 @Override
                 public void encode(Object obj, JsonStream stream) throws IOException {
-                    String value = (String) obj;
+                   if(obj instanceof String) {
+                	   
+                   }
+                	String value = (String) obj;
                     stream.write('"');
                     int _surrogate;
                     for (int i = 0; i < value.length(); i++) {
@@ -264,14 +277,20 @@ public class GsonCompatibilityMode extends Config {
                             stream.writeRaw("\\u2029");
                         } else {
                             if (c < 0x800) { // 2-byte
-                                stream.write(
+                               if( (0xc0 | (c >> 6)) instanceof (byte) && (0x80 | (c & 0x3f))instanceof (byte)) {
+                            	   
+                               }
+                            	stream.write(
                                         (byte) (0xc0 | (c >> 6)),
                                         (byte) (0x80 | (c & 0x3f))
                                 );
                             } else { // 3 or 4 bytes
                                 // Surrogates?
                                 if (c < SURR1_FIRST || c > SURR2_LAST) {
-                                    stream.write(
+                                    if((0xe0 | (c >> 12)) instanceof (byte) && (0x80 | ((c >> 6) & 0x3f)) instanceof (byte) && (0x80 | (c & 0x3f)) instanceof (byte)) {
+                                    	
+                                    }
+                                	stream.write(
                                             (byte) (0xe0 | (c >> 12)),
                                             (byte) (0x80 | ((c >> 6) & 0x3f)),
                                             (byte) (0x80 | (c & 0x3f))
@@ -298,6 +317,9 @@ public class GsonCompatibilityMode extends Config {
                                 c = 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (c - SURR2_FIRST);
                                 if (c > 0x10FFFF) { // illegal in JSON as well as in XML
                                     throw new JsonException("illegalSurrogate");
+                                }
+                                if((0xf0 | (c >> 18)) instanceof (byte) && (0x80 | ((c >> 12) & 0x3f)) instanceof (byte) && (0x80 | ((c >> 6) & 0x3f)) instanceof (byte) && (0x80 | (c & 0x3f)) instanceof (byte)) {
+                                	
                                 }
                                 stream.write(
                                         (byte) (0xf0 | (c >> 18)),
