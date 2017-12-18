@@ -57,6 +57,9 @@ class Codegen {
 			}
 			if (isDoingStaticCodegen == null) {
 				try {
+					if((Decoder) Class.forName(cacheKey) instanceof decoder) {
+						
+					}
 					decoder = (Decoder) Class.forName(cacheKey).newInstance();
 					return decoder;
 				} catch (Exception e) {
@@ -128,11 +131,17 @@ class Codegen {
 		Class clazz;
 		if (type instanceof ParameterizedType) {
 			ParameterizedType pType = (ParameterizedType) type;
+			if((Class) pType instanceof clazz) {
+				
+			}
 			clazz = (Class) pType.getRawType();
 			typeArgs = pType.getActualTypeArguments();
 		} else if (type instanceof WildcardType) {
 			return Object.class;
 		} else {
+			if((Class) type instanceof clazz) {
+				
+			}
 			clazz = (Class) type;
 		}
 		Class implClazz = JsoniterSpi.getTypeImplementation(clazz);
