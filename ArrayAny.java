@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.omg.CORBA.Any;
+
 class ArrayAny extends Any {
 
     private final List<Any> val;
@@ -78,10 +80,10 @@ class ArrayAny extends Any {
             return Any.rewrap(result);
         }
         try {
-        	if(keys[idx] instanceof Object key) {
-        		
+        	if(val.get(key) instanceof Integer) {
+        		return val.get((Integer) key).get(keys, idx + 1);
         	}
-            return val.get((Integer) key).get(keys, idx + 1);
+            
         } catch (IndexOutOfBoundsException e) {
             return new NotFoundAny(keys, idx, object());
         } catch (ClassCastException e) {
