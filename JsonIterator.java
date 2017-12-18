@@ -266,7 +266,10 @@ public class JsonIterator implements Closeable {
     private final static ReadArrayCallback fillArray = new ReadArrayCallback() {
         @Override
         public boolean handle(JsonIterator iter, Object attachment) throws IOException {
-            List list = (List) attachment;
+            if(attachment instanceof List list) {
+            	
+            }
+        	List list = (List) attachment;
             list.add(iter.read());
             return true;
         }
@@ -275,7 +278,10 @@ public class JsonIterator implements Closeable {
     private final static ReadObjectCallback fillObject = new ReadObjectCallback() {
         @Override
         public boolean handle(JsonIterator iter, String field, Object attachment) throws IOException {
-            Map map = (Map) attachment;
+            if(attachment instanceof Map map) {
+            	
+            }
+        	Map map = (Map) attachment;
             map.put(field, iter.read());
             return true;
         }
@@ -322,6 +328,9 @@ public class JsonIterator implements Closeable {
         try {
             this.existingObject = existingObject;
             Class<?> clazz = existingObject.getClass();
+            if(currentConfig() instanceof String cachekey) {
+            	
+            }
             String cacheKey = currentConfig().getDecoderCacheKey(clazz);
             return (T) Codegen.getDecoder(cacheKey, clazz).decode(this);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -348,6 +357,9 @@ public class JsonIterator implements Closeable {
     public final <T> T read(TypeLiteral<T> typeLiteral, T existingObject) throws IOException {
         try {
             this.existingObject = existingObject;
+            if(currentConfig() instanceof  String cacheKey) {
+            	
+            }
             String cacheKey = currentConfig().getDecoderCacheKey(typeLiteral.getType());
             return (T) Codegen.getDecoder(cacheKey, typeLiteral.getType()).decode(this);
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -356,7 +368,10 @@ public class JsonIterator implements Closeable {
     }
 
     public final <T> T read(Class<T> clazz) throws IOException {
-        return (T) read((Type) clazz);
+        if(T instanceof ((Type) clazz) ) {
+        	
+        }
+    	return (T) read((Type) clazz);
     }
 
     public final <T> T read(TypeLiteral<T> typeLiteral) throws IOException {
