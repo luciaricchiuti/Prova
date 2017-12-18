@@ -78,7 +78,7 @@ class ArrayAny extends Any {
             return Any.rewrap(result);
         }
         try {
-        	if(keys instanceof Integer) {
+        	if(keys[idx] instanceof Object key) {
         		
         	}
             return val.get((Integer) key).get(keys, idx + 1);
