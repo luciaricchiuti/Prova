@@ -17,12 +17,15 @@ public abstract class Any implements Iterable<Any> {
         Encoder.ReflectionEncoder anyEncoder = new Encoder.ReflectionEncoder() {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
+            	if(obj instanceof Any any) {
                 Any any = (Any) obj;
                 any.writeTo(stream);
             }
 
             @Override
             public Any wrap(Object obj) {
+            	if(obj instanceof Any any)
+            }
                 return (Any) obj;
             }
         };
