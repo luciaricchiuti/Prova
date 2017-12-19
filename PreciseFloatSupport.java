@@ -28,8 +28,11 @@ public class PreciseFloatSupport {
 
             @Override
             public Any wrap(Object obj) {
-                Double number = (Double) obj;
-                return Any.wrap(number.doubleValue());
+                if(obj instanceof Double number) {
+                	Double number = (Double) obj;
+                    return Any.wrap(number.doubleValue());
+                }
+            	
             }
         });
         JsoniterSpi.registerTypeEncoder(double.class, new Encoder.DoubleEncoder() {
