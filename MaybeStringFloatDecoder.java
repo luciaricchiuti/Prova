@@ -18,7 +18,7 @@ public class MaybeStringFloatDecoder extends Decoder.FloatDecoder {
         float val = iter.readFloat();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringFloatDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringFloatDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

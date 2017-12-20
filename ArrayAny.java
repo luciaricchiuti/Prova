@@ -80,7 +80,7 @@ class ArrayAny extends Any {
             return Any.rewrap(result);
         }
         try {
-        	if(val.get(key) instanceof Integer) {
+        	if(key instanceof Integer) {
         		return val.get((Integer) key).get(keys, idx + 1);
         	}
             

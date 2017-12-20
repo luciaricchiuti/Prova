@@ -472,13 +472,15 @@ class IterImplForStreaming {
                                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                 iter.reusableChars = newBuf;
                             }
-                            iter.reusableChars[j++] = (char) ((sup >>> 10) + 0xd800);
+                            Integer a = ((sup >>> 10) + 0xd800);
+                            iter.reusableChars[j++] = a.toString().toCharArray()[0];
                             if (iter.reusableChars.length == j) {
                                 char[] newBuf = new char[iter.reusableChars.length * 2];
                                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                 iter.reusableChars = newBuf;
                             }
-                            iter.reusableChars[j++] = (char) ((sup & 0x3ff) + 0xdc00);
+                            Integer b = ((sup & 0x3ff) + 0xdc00);
+                            iter.reusableChars[j++] = b.toString().toCharArray()[0];
                             continue;
                         }
                     }
@@ -578,7 +580,7 @@ class IterImplForStreaming {
                     case '7':
                     case '8':
                     case '9':
-                        iter.reusableChars[j++] = (char) c;
+                        iter.reusableChars[j++] = Byte.toString(c).charAt(0);
                         break;
                     default:
                         iter.head = i;

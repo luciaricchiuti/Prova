@@ -18,7 +18,7 @@ public class MaybeStringDoubleDecoder extends Decoder.DoubleDecoder {
         double val = iter.readDouble();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringDoubleDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringDoubleDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

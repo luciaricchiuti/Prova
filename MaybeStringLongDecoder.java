@@ -18,7 +18,7 @@ public class MaybeStringLongDecoder extends Decoder.LongDecoder {
         long val = iter.readLong();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringLongDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringLongDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

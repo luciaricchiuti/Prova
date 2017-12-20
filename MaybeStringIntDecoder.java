@@ -18,7 +18,7 @@ public class MaybeStringIntDecoder extends Decoder.IntDecoder {
         int val = iter.readInt();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringIntDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringIntDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

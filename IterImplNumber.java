@@ -72,7 +72,8 @@ class IterImplNumber {
     }
 
     public static final float readFloat(final JsonIterator iter) throws IOException {
-        return (float) IterImplNumber.readDouble(iter);
+        if(IterImplNumber.readDouble(iter) instanceof float) {
+    	return (float) IterImplNumber.readDouble(iter);
     }
 
     public static final int readInt(final JsonIterator iter) throws IOException {

@@ -21,7 +21,7 @@ class IterImplArray {
             case 'n':
                 return false;
             default:
-                throw iter.reportError("readArray", "expect [ or , or n or ], but found: " + (char) c);
+                throw iter.reportError("readArray", "expect [ or , or n or ], but found: " +  Byte.toString(c).charAt(0));
         }
     }
 
@@ -46,6 +46,6 @@ class IterImplArray {
         if (c == 'n') {
             return true;
         }
-        throw iter.reportError("readArrayCB", "expect [ or n, but found: " + (char) c);
+        throw iter.reportError("readArrayCB", "expect [ or n, but found: " + Byte.toString(c).charAt(0));
     }
 }

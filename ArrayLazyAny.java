@@ -107,7 +107,10 @@ class ArrayLazyAny extends LazyAny {
             return Any.rewrap(result);
         }
         try {
-            return fillCacheUntil((Integer) key).get(keys, idx + 1);
+        	if(key instanceof Integer) {
+        		return fillCacheUntil((Integer) key).get(keys, idx + 1);
+        	}
+            
         } catch (IndexOutOfBoundsException e) {
             return new NotFoundAny(keys, idx, object());
         } catch (ClassCastException e) {

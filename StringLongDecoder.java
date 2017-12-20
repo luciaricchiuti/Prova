@@ -12,12 +12,12 @@ public class StringLongDecoder extends Decoder.LongDecoder {
     public long decodeLong(JsonIterator iter) throws IOException {
         byte c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringLongDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringLongDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         long val = iter.readLong();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringLongDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringLongDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

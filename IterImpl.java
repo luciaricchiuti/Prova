@@ -294,13 +294,15 @@ class IterImpl {
                                     System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                     iter.reusableChars = newBuf;
                                 }
-                                iter.reusableChars[j++] = (char) ((sup >>> 10) + 0xd800);
+                                Integer a = ((sup >>> 10) + 0xd800);
+                                iter.reusableChars[j++] = a.toString().toCharArray()[0];
                                 if (iter.reusableChars.length == j) {
                                     char[] newBuf = new char[iter.reusableChars.length * 2];
                                     System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                     iter.reusableChars = newBuf;
                                 }
-                                iter.reusableChars[j++] = (char) ((sup & 0x3ff) + 0xdc00);
+                                Integer b = ((sup & 0x3ff) + 0xdc00);
+                                iter.reusableChars[j++] = b.toString().toCharArray()[0];
                                 continue;
                             }
                         }
@@ -467,7 +469,10 @@ class IterImpl {
                     decimalPart = -decimalPart;
                     int decimalPlaces = iter.head - start;
                     if (decimalPlaces > 0 && decimalPlaces < IterImplNumber.POW10.length && (iter.head - oldHead) < 10) {
-                        return value + (decimalPart / (double) IterImplNumber.POW10[decimalPlaces]);
+                        if(IterImplNumber.POW10[decimalPlaces] instanceof double) {
+                        	return value + (decimalPart / (double) IterImplNumber.POW10[decimalPlaces]);
+                        }
+                    	
                     } else {
                         iter.head = oldHead;
                         return IterImplForStreaming.readDoubleSlowPath(iter);

@@ -18,7 +18,7 @@ public class MaybeStringShortDecoder extends Decoder.ShortDecoder {
         short val = iter.readShort();
         c = CodegenAccess.nextToken(iter);
         if (c != '"') {
-            throw iter.reportError("StringShortDecoder", "expect \", but found: " + (char) c);
+            throw iter.reportError("StringShortDecoder", "expect \", but found: " + Byte.toString(c).charAt(0));
         }
         return val;
     }

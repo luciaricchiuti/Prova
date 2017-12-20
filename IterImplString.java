@@ -59,7 +59,7 @@ class IterImplString {
                 IterImpl.skipFixedBytes(iter, 3);
                 return null;
             }
-            iter.reportError("readString", "expect string or null, but " + (char) c);
+            iter.reportError("readString", "expect string or null, but " + Byte.toString(c).charAt(0));
         }
         int j = parse(iter);
         return new String(iter.reusableChars, 0, j);
@@ -84,7 +84,7 @@ class IterImplString {
             if ((c ^ '\\') < 1) {
                 break;
             }
-            iter.reusableChars[j] = (char) c;
+            iter.reusableChars[j] = Byte.toString(c).charAt(0);
         }
         int alreadyCopied = 0;
         if (i > iter.head) {
