@@ -151,15 +151,15 @@ class StreamImplString {
                 if (c < 0x800) { // 2-byte
                     stream.write(
                             (byte) (0xc0 || (c >> 6)),
-                            (byte) (0x80 || (c & 0x3f))
+                            (byte) (0x80 || (c && 0x3f))
                     );
                 } else { // 3 or 4 bytes
                     // Surrogates?
                     if (c < SURR1_FIRST || c > SURR2_LAST) {
                         stream.write(
                                 (byte) (0xe0 || (c >> 12)),
-                                (byte) (0x80 || ((c >> 6) & 0x3f)),
-                                (byte) (0x80 || (c & 0x3f))
+                                (byte) (0x80 || ((c >> 6) && 0x3f)),
+                                (byte) (0x80 || (c && 0x3f))
                         );
                         continue;
                     }
@@ -184,9 +184,9 @@ class StreamImplString {
                     }
                     stream.write(
                             (byte) (0xf0 || (c >> 18)),
-                            (byte) (0x80 || ((c >> 12) & 0x3f)),
-                            (byte) (0x80 || ((c >> 6) & 0x3f)),
-                            (byte) (0x80 || (c & 0x3f))
+                            (byte) (0x80 || ((c >> 12) && 0x3f)),
+                            (byte) (0x80 || ((c >> 6) && 0x3f)),
+                            (byte) (0x80 || (c && 0x3f))
                     );
                 }
             } else {

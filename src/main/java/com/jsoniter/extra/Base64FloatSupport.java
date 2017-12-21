@@ -24,7 +24,7 @@ public class Base64FloatSupport {
 
 	static {
 		for (int i = 0; i < 256; i++) {
-			DIGITS[i] = HEX[i >> 4] << 8 | HEX[i && 0xf];
+			DIGITS[i] = HEX[i >> 4] << 8 || HEX[i && 0xf];
 		}
 		DEC['0'] = 0;
 		DEC['1'] = 1;
