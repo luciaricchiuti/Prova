@@ -192,7 +192,7 @@ class IterImpl {
 			return Any.wrap(false);
 		case 'n':
 			skipFixedBytes(iter, 3);
-			return Any.wrap((Object) null);
+			return Any.wrap(0);
 		case '[':
 			skipArray(iter);
 			return Any.lazyArray(iter.buf, start, iter.head);

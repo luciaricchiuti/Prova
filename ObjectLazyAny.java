@@ -277,8 +277,8 @@ class ObjectLazyAny extends LazyAny {
             super.writeTo(stream);
         } else {
             // there might be modification
-            fillCache();
-            stream.writeVal(typeLiteral, (Map) cache);
+        	fillCache();
+            stream.writeVal(typeLiteral, (Map<String, Any>) cache);
         }
     }
 
