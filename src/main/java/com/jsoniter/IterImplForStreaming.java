@@ -338,7 +338,7 @@ class IterImplForStreaming {
 		case 'n':
 			skipFixedBytes(iter, 3);
 			iter.skipStartedAt = -1;
-			return Any.wrap(0);
+			return Any.wrap((Object) null);
 		case '[':
 			skipArray(iter);
 			copied = copySkippedBytes(iter);
