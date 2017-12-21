@@ -79,7 +79,7 @@ class ObjectLazyAny extends LazyAny {
         if(cache.keySet() instanceof Set) {
         	return (Set) cache.keySet();
         }
-       
+        
     }
 
     @Override

@@ -15,7 +15,7 @@ class Codegen {
 
 	// only read/write when generating code with synchronized protection
 	private final static Set<String> generatedClassNames = new HashSet<String>();
-	static CodegenAccess.StaticCodegenTarget isDoingStaticCodegen = null;
+	static CodegenAccess.StaticCodegenTarget isDoingStaticCodegen = new CodegenAccess.StaticCodegenTarget("");
 
 	static Decoder getDecoder(String cacheKey, Type type) {
 		Decoder decoder = JsoniterSpi.getDecoder(cacheKey);
@@ -55,11 +55,13 @@ class Codegen {
 				decoder = ReflectionDecoderFactory.create(classInfo);
 				return decoder;
 			}
-			if (isDoingStaticCodegen == null) {
+			if (isDoingStaticCodegen.outputDir == "") {
 				try {
-					if(Class.forName(cacheKey).newInstance() instanceof Decoder)
+					if(Class.forName(cacheKey).newInstance() instanceof Decoder) {
 						decoder = (Decoder) Class.forName(cacheKey).newInstance();
-					return decoder;
+						return decoder;
+					}
+					
 				} catch (Exception e) {
 					if (mode == DecodingMode.STATIC_MODE) {
 						throw new JsonException(
@@ -76,7 +78,7 @@ class Codegen {
 			}
 			try {
 				generatedClassNames.add(cacheKey);
-				if (isDoingStaticCodegen == null) {
+				if (isDoingStaticCodegen.outputDir == "") {
 					decoder = DynamicCodegen.gen(cacheKey, source);
 				} else {
 					staticGen(cacheKey, source);
@@ -129,14 +131,18 @@ class Codegen {
 		Class clazz;
 		if (type instanceof ParameterizedType) {
 			ParameterizedType pType = (ParameterizedType) type;
-			if(pType.getRawType() instanceof Class)
-			  clazz = (Class) pType.getRawType();
-			typeArgs = pType.getActualTypeArguments();
+			if(pType.getRawType() instanceof Class) {
+				clazz = (Class) pType.getRawType();
+				typeArgs = pType.getActualTypeArguments();
+			}
+			
 		} else if (type instanceof WildcardType) {
 			return Object.class;
 		} else {
-			if(type instanceof Class)
-			  clazz = (Class) type;
+			if(type instanceof Class) {
+				clazz = (Class) type;
+			}
+			
 		}
 		Class implClazz = JsoniterSpi.getTypeImplementation(clazz);
 		if (Collection.class.isAssignableFrom(clazz)) {
@@ -186,15 +192,14 @@ class Codegen {
 	private static void staticGen(String cacheKey, String source) throws IOException {
 		createDir(cacheKey);
 		String fileName = cacheKey.replace('.', '/') + ".java";
-		FileOutputStream fileOutputStream = new FileOutputStream(new File(isDoingStaticCodegen.outputDir, fileName));
+		FileOutputStream fileOutputStream = null;
 		try {
+			fileOutputStream = new FileOutputStream(new File(isDoingStaticCodegen.outputDir, fileName));
 			OutputStreamWriter writer = new OutputStreamWriter(fileOutputStream);
 			try {
 				staticGen(cacheKey, writer, source);
 			} finally {
 				writer.close();
-				fileOutputStream.close();
-				
 			}
 		} finally {
 			fileOutputStream.close();
