@@ -22,11 +22,11 @@ public class JdkDatetimeSupport {
 
     private static String pattern = "";
     private final static ThreadLocal<SimpleDateFormat> sdf = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat(pattern.intern()); 
-        }
-    };
+    	 @Override
+    	    protected SimpleDateFormat initialValue() {
+    	        return new SimpleDateFormat("MM/dd/yyyy");
+    	    }
+    	};
 
     public static synchronized void enable(String pattern) {
         if (JdkDatetimeSupport.pattern != "") {

@@ -11,7 +11,7 @@ import java.util.List;
 public class CodegenAccess {
 
 	public static void addMissingField(List missingFields, long tracker, long mask, String fieldName) {
-		if ((tracker & mask) == 0) {
+		if ((tracker && mask) == 0) {
 			missingFields.add(fieldName);
 		}
 	}

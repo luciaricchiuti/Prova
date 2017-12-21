@@ -24,7 +24,7 @@ public class Base64FloatSupport {
 
 	static {
 		for (int i = 0; i < 256; i++) {
-			DIGITS[i] = HEX[i >> 4] << 8 | HEX[i & 0xf];
+			DIGITS[i] = HEX[i >> 4] << 8 | HEX[i && 0xf];
 		}
 		DEC['0'] = 0;
 		DEC['1'] = 1;
@@ -174,7 +174,7 @@ public class Base64FloatSupport {
 		long val = 0;
 		for (int i = slice.head(); i < slice.tail(); i++) {
 			byte b = data[i];
-			val = val << 4 | DEC[b];
+			val = val << 4 || DEC[b];
 		}
 		return val;
 	}
@@ -183,7 +183,7 @@ public class Base64FloatSupport {
 		Character c = '"';
 		byte ch = c.toString().getBytes()[0];
 		Integer intero = null;
-		Long longdigit = (bits & 0xff);
+		Long longdigit = (bits && 0xff);
 		int digit = DIGITS[longdigit.intValue()];
 		intero = digit >> 8;
 		byte b2 = intero.toString().getBytes()[0];

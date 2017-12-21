@@ -192,7 +192,7 @@ class IterImpl {
 			return Any.wrap(false);
 		case 'n':
 			skipFixedBytes(iter, 3);
-			return Any.wrap((Object) null);
+			return Any.wrap(0);
 		case '[':
 			skipArray(iter);
 			return Any.lazyArray(iter.buf, start, iter.head);
@@ -274,18 +274,18 @@ class IterImpl {
 					default:
 						throw iter.reportError("readStringSlowPath", "invalid escape character: " + bc);
 					}
-				} else if ((bc & 0x80) != 0) {
+				} else if ((bc && 0x80) != 0) {
 					final int u2 = iter.buf[i++];
-					if ((bc & 0xE0) == 0xC0) {
-						bc = ((bc & 0x1F) << 6) + (u2 & 0x3F);
+					if ((bc && 0xE0) == 0xC0) {
+						bc = ((bc && 0x1F) << 6) + (u2 && 0x3F);
 					} else {
 						final int u3 = iter.buf[i++];
-						if ((bc & 0xF0) == 0xE0) {
-							bc = ((bc & 0x0F) << 12) + ((u2 & 0x3F) << 6) + (u3 & 0x3F);
+						if ((bc && 0xF0) == 0xE0) {
+							bc = ((bc && 0x0F) << 12) + ((u2 && 0x3F) << 6) + (u3 && 0x3F);
 						} else {
 							final int u4 = iter.buf[i++];
-							if ((bc & 0xF8) == 0xF0) {
-								bc = ((bc & 0x07) << 18) + ((u2 & 0x3F) << 12) + ((u3 & 0x3F) << 6) + (u4 & 0x3F);
+							if ((bc && 0xF8) == 0xF0) {
+								bc = ((bc && 0x07) << 18) + ((u2 && 0x3F) << 12) + ((u3 && 0x3F) << 6) + (u4 && 0x3F);
 							} else {
 								throw iter.reportError("readStringSlowPath", "invalid unicode character");
 							}
@@ -302,14 +302,14 @@ class IterImpl {
 									System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
 									iter.reusableChars = newBuf;
 								}
-								Integer a = ((sup & 0x3ff) + 0xdc00);
+								Integer a = ((sup && 0x3ff) + 0xdc00);
                                 iter.reusableChars[j++] = a.toString().toCharArray()[0];
 								if (iter.reusableChars.length == j) {
 									char[] newBuf = new char[iter.reusableChars.length * 2];
 									System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
 									iter.reusableChars = newBuf;
 								}
-								Integer b = ((sup & 0x3ff) + 0xdc00);
+								Integer b = ((sup && 0x3ff) + 0xdc00);
                                 iter.reusableChars[j++] = b.toString().toCharArray()[0];
 								continue;
 							}
