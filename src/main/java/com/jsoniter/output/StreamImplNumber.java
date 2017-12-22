@@ -78,13 +78,13 @@ class StreamImplNumber {
             return;
         }
         final int r2 = q1 - q2 * 1000;
-        final long q3 =  q2 / 1000;
+        final long q3 = q2 / 1000;
         final int v1 = DIGITS[r1];
         final int v2 = DIGITS[r2];
         if (q3 == 0) {
             pos += writeFirstBuf(buf, DIGITS[q2], pos);
         } else {
-            final int r3 =  (q2 - q3 * 1000);
+            final int r3 = (int) (q2 - q3 * 1000);
             buf[pos++] = (byte) (q3 + '0');
             writeBuf(buf, DIGITS[r3], pos);
             pos += 3;
@@ -133,7 +133,7 @@ class StreamImplNumber {
             stream.count = pos;
             return;
         }
-        final int r1 =  (value - q1 * 1000);
+        final int r1 = (int) (value - q1 * 1000);
         final long q2 = q1 / 1000;
         if (q2 == 0) {
             final int v1 = DIGITS[r1];
@@ -143,7 +143,7 @@ class StreamImplNumber {
             stream.count = pos + 3 + off;
             return;
         }
-        final int r2 =  (q1 - q2 * 1000);
+        final int r2 = (int) (q1 - q2 * 1000);
         final long q3 = q2 / 1000;
         if (q3 == 0) {
             final int v1 = DIGITS[r1];
@@ -155,8 +155,8 @@ class StreamImplNumber {
             stream.count = pos + 6;
             return;
         }
-        final int r3 =  (q2 - q3 * 1000);
-        final int q4 =  (q3 / 1000);
+        final int r3 = (int) (q2 - q3 * 1000);
+        final int q4 = (int) (q3 / 1000);
         if (q4 == 0) {
             final int v1 = DIGITS[r1];
             final int v2 = DIGITS[r2];
@@ -169,7 +169,7 @@ class StreamImplNumber {
             stream.count = pos + 9;
             return;
         }
-        final int r4 =  (q3 - q4 * 1000);
+        final int r4 = (int) (q3 - q4 * 1000);
         final int q5 = q4 / 1000;
         if (q5 == 0) {
             final int v1 = DIGITS[r1];

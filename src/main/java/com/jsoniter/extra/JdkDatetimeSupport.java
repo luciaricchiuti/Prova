@@ -21,12 +21,12 @@ import org.apache.commons.math3.stat.descriptive.SynchronizedDescriptiveStatisti
 public class JdkDatetimeSupport {
 
     private static String pattern = "";
-    LocalDate theDate = timePoint.toLocalDate ();
-    Mese mese = timePoint.getMonth ();
-    int day = timePoint.getDayOfMonth ();
-    timePoint.getSecond ();
-    
-
+    private final static ThreadLocal<SimpleDateFormat> sdf = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(pattern.intern()); 
+        }
+    };
 
     public static synchronized void enable(String pattern) {
         if (JdkDatetimeSupport.pattern != "") {

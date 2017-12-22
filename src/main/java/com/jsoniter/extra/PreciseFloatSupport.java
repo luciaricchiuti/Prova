@@ -29,10 +29,10 @@ public class PreciseFloatSupport {
             @Override
             public Any wrap(Object obj) {
             	if(obj instanceof Double) {
-            		Double number = (Double) obj;
-                    return Any.wrap(number.doubleValue());
+            		
             	}
-                
+                Double number = (Double) obj;
+                return Any.wrap(number.doubleValue());
             }
         });
         JsoniterSpi.registerTypeEncoder(double.class, new Encoder.DoubleEncoder() {
@@ -50,10 +50,10 @@ public class PreciseFloatSupport {
             @Override
             public Any wrap(Object obj) {
             	if(obj instanceof Float) {
-            		Float number = (Float) obj;
-                    return Any.wrap(number.floatValue());
+            		
             	}
-              
+                Float number = (Float) obj;
+                return Any.wrap(number.floatValue());
             }
         });
         JsoniterSpi.registerTypeEncoder(float.class, new Encoder.FloatEncoder() {

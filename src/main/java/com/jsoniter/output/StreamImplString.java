@@ -150,16 +150,16 @@ class StreamImplString {
             if (c > 125) {
                 if (c < 0x800) { // 2-byte
                     stream.write(
-                            (byte) (0xc0 || (c >> 6)),
-                            (byte) (0x80 || (c && 0x3f))
+                            (byte) (0xc0 | (c >> 6)),
+                            (byte) (0x80 | (c & 0x3f))
                     );
                 } else { // 3 or 4 bytes
                     // Surrogates?
                     if (c < SURR1_FIRST || c > SURR2_LAST) {
                         stream.write(
-                                (byte) (0xe0 || (c >> 12)),
-                                (byte) (0x80 || ((c >> 6) && 0x3f)),
-                                (byte) (0x80 || (c && 0x3f))
+                                (byte) (0xe0 | (c >> 12)),
+                                (byte) (0x80 | ((c >> 6) & 0x3f)),
+                                (byte) (0x80 | (c & 0x3f))
                         );
                         continue;
                     }
@@ -183,10 +183,10 @@ class StreamImplString {
                         throw new JsonException("illegalSurrogate");
                     }
                     stream.write(
-                            (byte) (0xf0 || (c >> 18)),
-                            (byte) (0x80 || ((c >> 12) && 0x3f)),
-                            (byte) (0x80 || ((c >> 6) && 0x3f)),
-                            (byte) (0x80 || (c && 0x3f))
+                            (byte) (0xf0 | (c >> 18)),
+                            (byte) (0x80 | ((c >> 12) & 0x3f)),
+                            (byte) (0x80 | ((c >> 6) & 0x3f)),
+                            (byte) (0x80 | (c & 0x3f))
                     );
                 }
             } else {
@@ -228,10 +228,10 @@ class StreamImplString {
     }
 
     private static void writeAsSlashU(JsonStream stream, int c) throws IOException {
-        byte b4 = (byte) (c && 0xf);
-        byte b3 = (byte) (c >> 4 && 0xf);
-        byte b2 = (byte) (c >> 8 && 0xf);
-        byte b1 = (byte) (c >> 12 && 0xf);
+        byte b4 = (byte) (c & 0xf);
+        byte b3 = (byte) (c >> 4 & 0xf);
+        byte b2 = (byte) (c >> 8 & 0xf);
+        byte b1 = (byte) (c >> 12 & 0xf);
         stream.write((byte) '\\', (byte) 'u', ITOA[b1], ITOA[b2], ITOA[b3], ITOA[b4]);
     }
 }

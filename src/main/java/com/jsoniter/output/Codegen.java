@@ -91,10 +91,10 @@ class Codegen {
 			if (isDoingStaticCodegen.outputDir == "") {
 				try {
 					if(Class.forName(cacheKey).newInstance() instanceof Encoder) {
-						encoder = (Encoder) Class.forName(cacheKey).newInstance();
-						return encoder;
+						
 					}
-					
+					encoder = (Encoder) Class.forName(cacheKey).newInstance();
+					return encoder;
 				} catch (Exception e) {
 					if (mode == EncodingMode.STATIC_MODE) {
 						throw new JsonException(
@@ -153,17 +153,17 @@ class Codegen {
 		Type[] typeArgs = new Type[0];
 		Class clazz;
 		if (type instanceof ParameterizedType) {
-			ParameterizedType pType = (ParameterizedType) type;
-			if(pType.getRawType() instanceof Class) {
-				clazz = (Class) pType.getRawType();
-				typeArgs = pType.getActualTypeArguments();
+			if (type instanceof ParameterizedType) {
+				
 			}
-			
+			ParameterizedType pType = (ParameterizedType) type;
+			clazz = (Class) pType.getRawType();
+			typeArgs = pType.getActualTypeArguments();
 		} else {
 			if(type instanceof Class) {
-				clazz = (Class) type;
+				
 			}
-			
+			clazz = (Class) type;
 		}
 		if (Modifier.isPublic(clazz.getModifiers())) {
 			return type;

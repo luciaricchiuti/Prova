@@ -77,9 +77,10 @@ class ObjectLazyAny extends LazyAny {
     public Set<String> keys() {
         fillCache();
         if(cache.keySet() instanceof Set) {
-        	return (Set) cache.keySet();
+        	
         }
         
+        return (Set) cache.keySet();
     }
 
     @Override
@@ -277,8 +278,8 @@ class ObjectLazyAny extends LazyAny {
             super.writeTo(stream);
         } else {
             // there might be modification
-        	fillCache();
-            stream.writeVal(typeLiteral, cache);
+            fillCache();
+            stream.writeVal(typeLiteral, (Map) cache);
         }
     }
 

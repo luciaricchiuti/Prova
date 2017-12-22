@@ -31,10 +31,10 @@ public class Base64Support {
         JsoniterSpi.registerTypeEncoder(byte[].class, new Encoder() {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
-            	if(obj instanceof byte[] bytes ) {
-            		byte[] bytes = (byte[]) obj;
+            	if(obj instanceof byte[] ) {
+            		
             	}
-                
+                byte[] bytes = (byte[]) obj;
                 stream.write('"');
                 Base64.encodeToBytes(bytes, stream);
                 stream.write('"');

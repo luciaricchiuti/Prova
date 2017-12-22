@@ -59,7 +59,7 @@ class IterImplString {
                 IterImpl.skipFixedBytes(iter, 3);
                 return null;
             }
-            iter.reportError("readString", "expect string or null, but " + Byte.toString(c).charAt(0)));
+            iter.reportError("readString", "expect string or null, but " + Byte.toString(c).charAt(0));
         }
         int j = parse(iter);
         return new String(iter.reusableChars, 0, j);

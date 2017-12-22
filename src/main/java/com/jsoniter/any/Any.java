@@ -17,19 +17,26 @@ public abstract class Any implements Iterable<Any> {
         Encoder.ReflectionEncoder anyEncoder = new Encoder.ReflectionEncoder() {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
+            	Any any = null; 
             	if(obj instanceof Any) {
-            		Any any = (Any) obj;
-                    any.writeTo(stream);
+            		any = (Any) obj;
             	}
-            	
+                any.writeTo(stream);
             }
 
             @Override
-            public Any wrap(Object obj) {
+            public Any wrap(Object obj){
+            	Any any = null;
+            	try {
             	if(obj instanceof Any ) {
-            		return (Any) obj;
+            		any = (Any) obj;
             	}
-            	
+            	}catch (Exception e) {
+            		System.out.print(e.getMessage());
+            	}finally {
+            		return any; 
+            	}
+                
             }
         };
         JsonStream.registerNativeEncoder(Any.class, anyEncoder);
@@ -106,21 +113,24 @@ public abstract class Any implements Iterable<Any> {
     }
 
     public <T> T bindTo(T obj) {
-    	if(T instanceof object()) {
-    		return (T) object();
+    	T oggetto = null;
+    	if(object() instanceof Map<?, ?>) {
+    		oggetto = (T) object();
     	}
-       
+        return oggetto;
     }
+    
 
     public <T> T bindTo(TypeLiteral<T> typeLiteral, T obj, Object... keys) {
         return get(keys).bindTo(typeLiteral, obj);
     }
 
     public <T> T bindTo(TypeLiteral<T> typeLiteral, T obj) {
-       if(T instanceof object()) {
-    	   return (T) object();
-       }
-    	
+    	T oggetto = null;
+    	if(object() instanceof Map<?, ?>) {
+    		oggetto = (T) object();
+    	}
+        return oggetto;
     }
 
     public Object object(Object... keys) {
@@ -130,17 +140,14 @@ public abstract class Any implements Iterable<Any> {
     public abstract Object object();
 
     public Map<String, Any> asMap() {
-    	if(Map<String, Any> instanceof object()) {
-    		return (Map<String, Any>) object();
-    	}
-        
+        return (Map<String, Any>) object();
     }
 
     public List<Any> asList() {
-    	if(List<Any> instanceof object()) {
-    		 return (List<Any>) object();
+    	if(object() instanceof List<?> ) {
+    		
     	}
-        
+        return (List<Any>) object();
     }
 
     public <T> T as(Class<T> clazz, Object... keys) {
@@ -148,22 +155,26 @@ public abstract class Any implements Iterable<Any> {
     }
 
     public <T> T as(Class<T> clazz) {
-        if(T instanceof object()) {
-        	return (T) object();
-        }
-    	
+    	T oggetto = null;
+    	if(object() instanceof Map<?, ?>) {
+    		oggetto = (T) object();
+    	}
+        return oggetto;
     }
+    
 
     public <T> T as(TypeLiteral<T> typeLiteral, Object... keys) {
         return get(keys).as(typeLiteral);
     }
 
     public <T> T as(TypeLiteral<T> typeLiteral) {
-    	if(T instanceof object()) {
-    		return (T) object();
+    	T oggetto = null;
+    	if(object() instanceof Map<?, ?>) {
+    		oggetto = (T) object();
     	}
-        
+        return oggetto;
     }
+    
 
     public final boolean toBoolean(Object... keys) {
         return get(keys).toBoolean();
@@ -371,10 +382,10 @@ public abstract class Any implements Iterable<Any> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if(o instanceof Any) {
-        	  Any any = (Any) o;
+        	
         }
 
-        
+        Any any = (Any) o;
 
         Object obj = this.object();
         Object thatObj = any.object();

@@ -112,25 +112,25 @@ abstract class Base64 {
 		// Encode even 24-bits
 		for (int s = 0, d = start; s < eLen;) {
 			// Copy next three bytes into lower 24 bits of int, paying attension to sign.
-			int i = (sArr[s++] && 0xff) << 16 || (sArr[s++] && 0xff) << 8 || (sArr[s++] && 0xff);
+			int i = (sArr[s++] & 0xff) << 16 | (sArr[s++] & 0xff) << 8 | (sArr[s++] & 0xff);
 
 			// Encode the int into four chars
-			dArr[d++] = CA[(i >>> 18) && 0x3f];
-			dArr[d++] = CA[(i >>> 12) && 0x3f];
-			dArr[d++] = CA[(i >>> 6) && 0x3f];
-			dArr[d++] = CA[i && 0x3f];
+			dArr[d++] = CA[(i >>> 18) & 0x3f];
+			dArr[d++] = CA[(i >>> 12) & 0x3f];
+			dArr[d++] = CA[(i >>> 6) & 0x3f];
+			dArr[d++] = CA[i & 0x3f];
 		}
 
 		// Pad and encode last bits if source isn't even 24 bits.
 		int left = sLen - eLen; // 0 - 2.
 		if (left > 0) {
 			// Prepare the int
-			int i = ((sArr[eLen] && 0xff) << 10) || (left == 2 ? ((sArr[sLen - 1] && 0xff) << 2) : 0);
+			int i = ((sArr[eLen] & 0xff) << 10) | (left == 2 ? ((sArr[sLen - 1] & 0xff) << 2) : 0);
 
 			// Set last four chars
 			dArr[start + dLen - 4] = CA[i >> 12];
-			dArr[start + dLen - 3] = CA[(i >>> 6) && 0x3f];
-			dArr[start + dLen - 2] = left == 2 ? CA[i && 0x3f] : '=';
+			dArr[start + dLen - 3] = CA[(i >>> 6) & 0x3f];
+			dArr[start + dLen - 2] = left == 2 ? CA[i & 0x3f] : '=';
 			dArr[start + dLen - 1] = '=';
 		}
 
@@ -146,22 +146,22 @@ abstract class Base64 {
 		// Encode even 24-bits
 		for (int s = 0; s < eLen;) {
 			// Copy next three bytes into lower 24 bits of int, paying attension to sign.
-			int i = (sArr[s++] && 0xff) << 16 || (sArr[s++] && 0xff) << 8 || (sArr[s++] && 0xff);
+			int i = (sArr[s++] & 0xff) << 16 | (sArr[s++] & 0xff) << 8 | (sArr[s++] & 0xff);
 
 			// Encode the int into four chars
-			stream.write(BA[(i >>> 18) && 0x3f], BA[(i >>> 12) && 0x3f], BA[(i >>> 6) && 0x3f], BA[i && 0x3f]);
+			stream.write(BA[(i >>> 18) & 0x3f], BA[(i >>> 12) & 0x3f], BA[(i >>> 6) & 0x3f], BA[i & 0x3f]);
 		}
 
 		// Pad and encode last bits if source isn't even 24 bits.
 		int left = sLen - eLen; // 0 - 2.
 		if (left > 0) {
 			// Prepare the int
-			int i = ((sArr[eLen] && 0xff) << 10) || (left == 2 ? ((sArr[sLen - 1] && 0xff) << 2) : 0);
+			int i = ((sArr[eLen] & 0xff) << 10) | (left == 2 ? ((sArr[sLen - 1] & 0xff) << 2) : 0);
 
 			// Set last four chars
 			Character c = '=';
 			byte ch = c.toString().getBytes().clone()[0];
-			stream.write(BA[i >> 12], BA[(i >>> 6) && 0x3f], left == 2 ? BA[i && 0x3f] : ch, ch);
+			stream.write(BA[i >> 12], BA[(i >>> 6) & 0x3f], left == 2 ? BA[i & 0x3f] : ch, ch);
 		}
 
 		return dLen;
@@ -169,24 +169,24 @@ abstract class Base64 {
 
 	static void encodeLongBits(long bits, JsonStream stream) throws IOException {
 		int i = (int) bits;
-		byte b1 = BA[(i >>> 18) && 0x3f];
-		byte b2 = BA[(i >>> 12) && 0x3f];
-		byte b3 = BA[(i >>> 6) && 0x3f];
-		byte b4 = BA[i && 0x3f];
+		byte b1 = BA[(i >>> 18) & 0x3f];
+		byte b2 = BA[(i >>> 12) & 0x3f];
+		byte b3 = BA[(i >>> 6) & 0x3f];
+		byte b4 = BA[i & 0x3f];
 		Character c = '"';
 		stream.write(c.toString().getBytes().clone()[0], b1, b2, b3, b4);
 		bits = bits >>> 24;
 		i = (int) bits;
-		b1 = BA[(i >>> 18) && 0x3f];
-		b2 = BA[(i >>> 12) && 0x3f];
-		b3 = BA[(i >>> 6) && 0x3f];
-		b4 = BA[i && 0x3f];
+		b1 = BA[(i >>> 18) & 0x3f];
+		b2 = BA[(i >>> 12) & 0x3f];
+		b3 = BA[(i >>> 6) & 0x3f];
+		b4 = BA[i & 0x3f];
 		stream.write(b1, b2, b3, b4);
 		bits = (bits >>> 24) << 2;
 		i = (int) bits;
 		b1 = BA[i >> 12];
-		b2 = BA[(i >>> 6) && 0x3f];
-		b3 = BA[i && 0x3f];
+		b2 = BA[(i >>> 6) & 0x3f];
+		b3 = BA[i & 0x3f];
 		stream.write(b1, b2, b3, c.toString().getBytes().clone()[0]);
 	}
 
@@ -197,18 +197,18 @@ abstract class Base64 {
 		}
 		byte[] encoded = slice.data();
 		int sIx = slice.head();
-		long i = IA[encoded[sIx++]] << 18 || IA[encoded[sIx++]] << 12 || IA[encoded[sIx++]] << 6 || IA[encoded[sIx++]];
+		long i = IA[encoded[sIx++]] << 18 | IA[encoded[sIx++]] << 12 | IA[encoded[sIx++]] << 6 | IA[encoded[sIx++]];
 		long bits = i;
-		i = IA[encoded[sIx++]] << 18 || IA[encoded[sIx++]] << 12 || IA[encoded[sIx++]] << 6 || IA[encoded[sIx++]];
-		bits = i << 24 || bits;
-		i = IA[encoded[sIx++]] << 12 || IA[encoded[sIx++]] << 6 || IA[encoded[sIx]];
-		bits = i << 46 || bits;
+		i = IA[encoded[sIx++]] << 18 | IA[encoded[sIx++]] << 12 | IA[encoded[sIx++]] << 6 | IA[encoded[sIx++]];
+		bits = i << 24 | bits;
+		i = IA[encoded[sIx++]] << 12 | IA[encoded[sIx++]] << 6 | IA[encoded[sIx]];
+		bits = i << 46 | bits;
 		return bits;
 	}
 
 	static int findEnd(final byte[] sArr, final int start) {
 		for (int i = start; i < sArr.length; i++)
-			if (IA[sArr[i] && 0xff] < 0)
+			if (IA[sArr[i] & 0xff] < 0)
 				return i;
 		return sArr.length;
 	}
@@ -225,11 +225,11 @@ abstract class Base64 {
 		int sIx = start, eIx = end - 1; // Start and end index after trimming.
 
 		// Trim illegal chars from start
-		while (sIx < eIx && IA[sArr[sIx] && 0xff] < 0)
+		while (sIx < eIx && IA[sArr[sIx] & 0xff] < 0)
 			sIx++;
 
 		// Trim illegal chars from end
-		while (eIx > 0 && IA[sArr[eIx] && 0xff] < 0)
+		while (eIx > 0 && IA[sArr[eIx] & 0xff] < 0)
 			eIx--;
 
 		// get the padding count (=) (0, 1 or 2)
@@ -244,7 +244,7 @@ abstract class Base64 {
 		int d = 0;
 		for (int cc = 0, eLen = (len / 3) * 3; d < eLen;) {
 			// Assemble three bytes into an int from four "valid" characters.
-			int i = IA[sArr[sIx++]] << 18 || IA[sArr[sIx++]] << 12 || IA[sArr[sIx++]] << 6 || IA[sArr[sIx++]];
+			int i = IA[sArr[sIx++]] << 18 | IA[sArr[sIx++]] << 12 | IA[sArr[sIx++]] << 6 | IA[sArr[sIx++]];
 
 			// Add the bytes
 			intero = i >> 16;
