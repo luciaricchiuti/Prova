@@ -77,10 +77,11 @@ class ObjectLazyAny extends LazyAny {
     public Set<String> keys() {
         fillCache();
         if(cache.keySet() instanceof Set) {
-        	
+        	return (Set) cache.keySet();
         }
+		return null;
         
-        return (Set) cache.keySet();
+        
     }
 
     @Override

@@ -482,9 +482,9 @@ class IterImpl {
 					if (decimalPlaces > 0 && decimalPlaces < IterImplNumber.POW10.length
 							&& (iter.head - oldHead) < 10) {
 						if(IterImplNumber.POW10[decimalPlaces] instanceof double) {
-							
+							return value + (decimalPart / (double) IterImplNumber.POW10[decimalPlaces]);
 						}
-						return value + (decimalPart / (double) IterImplNumber.POW10[decimalPlaces]);
+						
 					} else {
 						iter.head = oldHead;
 						return IterImplForStreaming.readDoubleSlowPath(iter);

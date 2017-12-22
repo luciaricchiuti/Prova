@@ -103,14 +103,15 @@ class ArrayWrapperAny extends Any {
         }
         try {
         	if(key instanceof Integer) {
-        		
+        		 return fillCacheUntil((Integer) key).get(keys, idx + 1);
         	}
-            return fillCacheUntil((Integer) key).get(keys, idx + 1);
+           
         } catch (IndexOutOfBoundsException e) {
             return new NotFoundAny(keys, idx, object());
         } catch (ClassCastException e) {
             return new NotFoundAny(keys, idx, object());
         }
+		return null;
     }
 
     @Override

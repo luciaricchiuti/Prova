@@ -32,12 +32,13 @@ public class Base64Support {
             @Override
             public void encode(Object obj, JsonStream stream) throws IOException {
             	if(obj instanceof byte[] ) {
-            		
+            		byte[] bytes = (byte[]) obj;
+            		stream.write('"');
+                    Base64.encodeToBytes(bytes, stream);
+                    stream.write('"');
             	}
-                byte[] bytes = (byte[]) obj;
-                stream.write('"');
-                Base64.encodeToBytes(bytes, stream);
-                stream.write('"');
+                
+                
             }
         });
     }

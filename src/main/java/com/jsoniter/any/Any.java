@@ -145,9 +145,10 @@ public abstract class Any implements Iterable<Any> {
 
     public List<Any> asList() {
     	if(object() instanceof List<?> ) {
-    		
+    		return (List<Any>) object();
     	}
-        return (List<Any>) object();
+		return null;
+        
     }
 
     public <T> T as(Class<T> clazz, Object... keys) {
@@ -382,14 +383,14 @@ public abstract class Any implements Iterable<Any> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if(o instanceof Any) {
-        	
+        	 Any any = (Any) o;
+        	  Object obj = this.object();
+              Object thatObj = any.object();
+              return obj != null ? obj.equals(thatObj) : thatObj == null;
         }
+		return false;
 
-        Any any = (Any) o;
-
-        Object obj = this.object();
-        Object thatObj = any.object();
-        return obj != null ? obj.equals(thatObj) : thatObj == null;
+      
     }
 
     @Override
