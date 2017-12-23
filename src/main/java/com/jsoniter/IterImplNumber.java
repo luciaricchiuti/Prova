@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.jsoniter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 class IterImplNumber {
 
@@ -72,10 +73,8 @@ class IterImplNumber {
     }
 
     public static final float readFloat(final JsonIterator iter) throws IOException {
-    	if(IterImplNumber.readDouble(iter) instanceof float) {
-    		return (float) IterImplNumber.readDouble(iter);
-    	}
-        
+    	BigDecimal number = new BigDecimal(IterImplNumber.readDouble(iter));
+    		return number.floatValue();        
     }
 
     public static final int readInt(final JsonIterator iter) throws IOException {

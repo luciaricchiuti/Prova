@@ -5,6 +5,7 @@ import com.jsoniter.spi.JsonException;
 import com.jsoniter.spi.Slice;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 class IterImpl {
 
@@ -481,9 +482,8 @@ class IterImpl {
 					int decimalPlaces = iter.head - start;
 					if (decimalPlaces > 0 && decimalPlaces < IterImplNumber.POW10.length
 							&& (iter.head - oldHead) < 10) {
-						if(IterImplNumber.POW10[decimalPlaces] instanceof double) {
-							return value + (decimalPart / (double) IterImplNumber.POW10[decimalPlaces]);
-						}
+						BigDecimal number = new BigDecimal(IterImplNumber.POW10[decimalPlaces]);
+						return value + (decimalPart / number.floatValue());
 						
 					} else {
 						iter.head = oldHead;
