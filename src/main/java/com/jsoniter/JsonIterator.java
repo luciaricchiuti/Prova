@@ -29,6 +29,7 @@ public class JsonIterator implements Closeable {
 	final Slice reusableSlice = new Slice(null, 0, 0);
 	char[] reusableChars = new char[32];
 	Object existingObject = null; // the object should be bind to next
+	private Type T;
 
 	static {
 		for (int i = 0; i < valueTypes.length; i++) {
@@ -376,17 +377,19 @@ public class JsonIterator implements Closeable {
 	}
 
 	public final <T> T read(Class<T> clazz) throws IOException {
-		if(T instanceof ((Type) clazz) ) {
-			
+		if(T == ((Type) clazz) ) {
+			return (T) read((Type) clazz);
 		}
-		return (T) read((Type) clazz);
+		return null;
+		
 	}
 
 	public final <T> T read(TypeLiteral<T> typeLiteral) throws IOException {
-		if(T instanceof (typeLiteral.getType())) {
-			
+		if(T == (typeLiteral.getType())) {
+			return (T) read(typeLiteral.getType());
 		}
-		return (T) read(typeLiteral.getType());
+		return null;
+		
 	}
 
 	public final Object read(Type type) throws IOException {
