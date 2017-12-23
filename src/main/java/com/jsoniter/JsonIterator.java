@@ -268,11 +268,12 @@ public class JsonIterator implements Closeable {
 		@Override
 		public boolean handle(JsonIterator iter, Object attachment) throws IOException {
 			if(attachment instanceof List ) {
-				
+				List list = (List) attachment;
+				list.add(iter.read());
+				return true;
 			}
-			List list = (List) attachment;
-			list.add(iter.read());
-			return true;
+			return false;
+			
 		}
 	};
 
@@ -280,11 +281,12 @@ public class JsonIterator implements Closeable {
 		@Override
 		public boolean handle(JsonIterator iter, String field, Object attachment) throws IOException {
 			if(attachment instanceof Map) {
-				
+				Map map = (Map) attachment;
+				map.put(field, iter.read());
+				return true;
 			}
-			Map map = (Map) attachment;
-			map.put(field, iter.read());
-			return true;
+			return false;
+			
 		}
 	};
 
@@ -334,13 +336,14 @@ public class JsonIterator implements Closeable {
 			this.existingObject = existingObject;
 			Class<?> clazz = existingObject.getClass();
 			if(currentConfig().getDecoderCacheKey(clazz) instanceof String ) {
-				
+				String cacheKey = currentConfig().getDecoderCacheKey(clazz);
+				return (T) Codegen.getDecoder(cacheKey, clazz).decode(this);
 			}
-			String cacheKey = currentConfig().getDecoderCacheKey(clazz);
-			return (T) Codegen.getDecoder(cacheKey, clazz).decode(this);
+			
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw reportError("read", "premature end");
 		}
+		return existingObject;
 	}
 
 	private Config currentConfig() {
@@ -367,13 +370,14 @@ public class JsonIterator implements Closeable {
 		try {
 			this.existingObject = existingObject;
 			if(currentConfig().getDecoderCacheKey(null)instanceof  String ) {
-				
+				String cacheKey = currentConfig().getDecoderCacheKey(typeLiteral.getType());
+				return (T) Codegen.getDecoder(cacheKey, typeLiteral.getType()).decode(this);
 			}
-			String cacheKey = currentConfig().getDecoderCacheKey(typeLiteral.getType());
-			return (T) Codegen.getDecoder(cacheKey, typeLiteral.getType()).decode(this);
+		
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw reportError("read", "premature end");
 		}
+		return existingObject;
 	}
 
 	public final <T> T read(Class<T> clazz) throws IOException {
